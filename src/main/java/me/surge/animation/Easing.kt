@@ -141,7 +141,7 @@ enum class Easing(private val easeFunction: (Double) -> Double) {
     /**
      * Speed gradually increases
      */
-    BACK_IN({ input -> 2.70158 + 1 * input * input * input - 1.70158 * input * input }),
+    BACK_IN({ input -> ((2 * input).pow(2.0) * ((2.5949095 + 1) * 2 * input - 2.5949095)) / 2 }),
 
     /**
      * Speed gradually decreases
