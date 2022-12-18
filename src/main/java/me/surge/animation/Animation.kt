@@ -18,7 +18,7 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
                 System.currentTimeMillis() - (getLinearFactor() * length.invoke().toLong()).toLong()
             } else {
                 if (applyBothWays) {
-                    System.currentTimeMillis() - (getLinearFactor() * length.invoke().toLong()).toLong()
+                    System.currentTimeMillis() - ((1 - (1 - getLinearFactor())) * length.invoke().toLong()).toLong()
                 } else {
                     System.currentTimeMillis() - ((1 - getLinearFactor()) * length.invoke().toLong()).toLong()
                 }
