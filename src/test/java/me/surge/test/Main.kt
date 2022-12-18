@@ -14,14 +14,30 @@ fun main() {
     println("NORMAL ANIMATION")
 
     // Create animation object
-    val animation = Animation({ 800f }, true, { Easing.CUBIC_OUT }, applyBothWays = true)
+    val animation = Animation({ 200f }, true, { Easing.CUBIC_OUT }, applyBothWays = true)
+    println(animation.getAnimationFactor())
 
     // Set animation state
     animation.state = false
 
+    var last = 1.0
+
     // Get and print animation factor
     while (animation.getAnimationFactor() > 0.0) {
-        println(animation.getAnimationFactor())
+        val factor = animation.getAnimationFactor()
+
+        if (factor != last) {
+            println(factor)
+            last = factor
+        }
+
+        if (factor < 0.5) {
+            animation.state = true
+        }
+
+        if (factor == 1.0 && animation.state == true) {
+            break
+        }
     }
 
 

@@ -17,11 +17,7 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
             lastMillis = if (value) {
                 System.currentTimeMillis() - (getLinearFactor() * length.invoke().toLong()).toLong()
             } else {
-                if (applyBothWays) {
-                    System.currentTimeMillis() - ((1 - (1 - getLinearFactor())) * length.invoke().toLong()).toLong()
-                } else {
-                    System.currentTimeMillis() - ((1 - getLinearFactor()) * length.invoke().toLong()).toLong()
-                }
+                System.currentTimeMillis() - ((1 - getLinearFactor()) * length.invoke().toLong()).toLong()
             }
 
             field = value
@@ -48,12 +44,16 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
      * @return The animation factor
      */
     open fun getAnimationFactor(): Double = if (state) {
-        easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+        if (applyBothWays) {
+            easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+        } else {
+            easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+        }
     } else {
         if (applyBothWays) {
-            1f - easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+            easing.invoke().ease((1f - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
         } else {
-            easing.invoke().ease((1 - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+            1f - easing.invoke().ease((1f - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
         }
     }
 
@@ -76,11 +76,7 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
     private fun getLinearFactor(): Double = if (state) {
         ((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0)
     } else {
-        if (applyBothWays) {
-            1f - ((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0)
-        } else {
-            (1f - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0)
-        }
+        (1f - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0)
     }
 
 }
