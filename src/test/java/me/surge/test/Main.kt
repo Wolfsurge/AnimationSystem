@@ -1,9 +1,6 @@
 package me.surge.test
 
-import me.surge.animation.Animation
-import me.surge.animation.BoundedAnimation
-import me.surge.animation.ColourAnimation
-import me.surge.animation.Easing
+import me.surge.animation.*
 import java.awt.Color
 
 /**

@@ -9,6 +9,9 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
     // Time since last state update
     private var lastMillis: Long = 0L
 
+    // Whether the easing should be applied both ways.
+    private val applyBothWays = javaClass.isAnnotationPresent(ApplyBothWays::class.java)
+
     // Current state of the animation
     // True = Expanding / Expanded
     // False = Contracting / Collapsed
@@ -46,7 +49,11 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
     open fun getAnimationFactor(): Double = if (state) {
         easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
     } else {
-        easing.invoke().ease((1 - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+        if (applyBothWays) {
+            1f - easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+        } else {
+            easing.invoke().ease((1 - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+        }
     }
 
     /**
@@ -65,6 +72,11 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
     /**
      * For internal use only!
      */
-    private fun getLinearFactor(): Double = if (!state) { (1 - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0) } else { ((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0) }
+    private fun getLinearFactor(): Double =
+        if (!state) {
+            (1 - (System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0)
+        } else {
+            ((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0)
+        }
 
 }
