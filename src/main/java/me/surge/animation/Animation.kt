@@ -17,7 +17,11 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
             lastMillis = if (!value) {
                 System.currentTimeMillis() - ((1 - getLinearFactor()) * length.invoke().toLong()).toLong()
             } else {
-                System.currentTimeMillis() - (getLinearFactor() * length.invoke().toLong()).toLong()
+                if (applyBothWays) {
+                    System.currentTimeMillis() - (1f - (getLinearFactor() * length.invoke().toLong())).toLong()
+                } else {
+                    System.currentTimeMillis() - (getLinearFactor() * length.invoke().toLong()).toLong()
+                }
             }
 
             field = value
