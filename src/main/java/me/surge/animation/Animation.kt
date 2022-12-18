@@ -14,13 +14,13 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
     // False = Contracting / Collapsed
     var state: Boolean = initialState
         set(value) {
-            lastMillis = if (!value) {
-                System.currentTimeMillis() - ((1 - getLinearFactor()) * length.invoke().toLong()).toLong()
+            lastMillis = if (value) {
+                System.currentTimeMillis() - (getLinearFactor() * length.invoke().toLong()).toLong()
             } else {
                 if (applyBothWays) {
-                    System.currentTimeMillis() - (1f - (getLinearFactor() * length.invoke().toLong())).toLong()
-                } else {
                     System.currentTimeMillis() - (getLinearFactor() * length.invoke().toLong()).toLong()
+                } else {
+                    System.currentTimeMillis() - ((1 - getLinearFactor()) * length.invoke().toLong()).toLong()
                 }
             }
 
