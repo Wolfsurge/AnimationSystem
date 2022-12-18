@@ -2,6 +2,8 @@ package me.surge.test
 
 import me.surge.animation.*
 import java.awt.Color
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * @author Surge
@@ -12,13 +14,13 @@ fun main() {
     println("NORMAL ANIMATION")
 
     // Create animation object
-    val animation = Animation({ 200f }, false, { Easing.LINEAR })
+    val animation = Animation({ 800f }, true, { Easing.CUBIC_OUT }, applyBothWays = true)
 
     // Set animation state
-    animation.state = true
+    animation.state = false
 
     // Get and print animation factor
-    while (animation.getAnimationFactor() < 1.0) {
+    while (animation.getAnimationFactor() > 0.0) {
         println(animation.getAnimationFactor())
     }
 
@@ -35,7 +37,7 @@ fun main() {
 
     // Get and print animation factor
     while (bounded.getAnimationFactor() < bounded.maximum) {
-        println(bounded.getAnimationFactor())
+        //println(bounded.getAnimationFactor())
     }
 
 
@@ -54,6 +56,6 @@ fun main() {
         // Colour
         val colour = colourAnimation.getColour()
 
-        println("R ${colour.red} G ${colour.green} B ${colour.blue} A ${colour.alpha}")
+        //println("R ${colour.red} G ${colour.green} B ${colour.blue} A ${colour.alpha}")
     }
 }

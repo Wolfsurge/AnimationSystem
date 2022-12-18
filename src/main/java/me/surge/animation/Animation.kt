@@ -4,13 +4,10 @@ package me.surge.animation
  * @author Surge
  * @since 26/07/2022
  */
-open class Animation(val length: () -> Float, val initialState: Boolean, val easing: () -> Easing) {
+open class Animation(val length: () -> Float, val initialState: Boolean, val easing: () -> Easing, val applyBothWays: Boolean = true) {
 
     // Time since last state update
     private var lastMillis: Long = 0L
-
-    // Whether the easing should be applied both ways.
-    private val applyBothWays = javaClass.isAnnotationPresent(ApplyBothWays::class.java)
 
     // Current state of the animation
     // True = Expanding / Expanded
