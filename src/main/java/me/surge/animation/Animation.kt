@@ -45,7 +45,7 @@ open class Animation(val length: () -> Float, val initialState: Boolean, val eas
      */
     open fun getAnimationFactor(): Double = if (state) {
         if (applyBothWays) {
-            1f - easing.invoke().ease(1f - ((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
+            easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
         } else {
             easing.invoke().ease(((System.currentTimeMillis() - lastMillis.toDouble()) / length.invoke().toDouble()).coerceIn(0.0, 1.0))
         }
